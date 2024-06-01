@@ -6,11 +6,17 @@ const backBtn = document.getElementById("backBtn")
 const captureScreen = document.getElementById("captureScreen")
 const infoScreen = document.getElementById("infoScreen")
 
-navigator.mediaDevices.getUserMedia({
-    video: {
-        facingMode: { exact: "environment" },
-    },
-})
+function getUserMedia() {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        // Mobile device
+        return navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: "environment" } } });
+    } else {
+        // Laptop or desktop
+        return navigator.mediaDevices.getUserMedia({ video: true });
+    }
+}
+
+getUserMedia()
     .then(stream => {
         video.srcObject = stream;
     })
