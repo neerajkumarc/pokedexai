@@ -50,8 +50,6 @@ function sendToEndpoint(base64String) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            // document.getElementById('response').textContent = JSON.stringify(data, null, 2);
             renderInfo(data)
         })
         .catch(error => {
