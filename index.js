@@ -30,13 +30,10 @@ app.post('/pokedexit', async (req, res) => {
        
         `, {"inlineData":{"data":imageData, "mimeType":"image/*"}}];
 
-        // const prompt = ["what is shown in the image", ]
-
         const result = await model.generateContent(prompt);
         const text = result.response.text();
         const jsonString = text.replace(/^```json\s*|```$/g, '')
         res.json(JSON.parse(jsonString));
-        // res.send(text)
     } catch (e) {
         console.error(e);
         res.status(500).json({ error: "Sorry, request can't be processed at the moment." });
