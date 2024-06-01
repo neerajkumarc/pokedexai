@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokedexAI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="container">
+        <div class="circle-container">
+            <div class="circle blue"><img src="bluecircle.png" alt="blue circle"></div>
+            <div class="small-circles">
+                <div class="circle red"></div>
+                <div class="circle yellow"></div>
+                <div class="circle green"></div>
+            </div>
+        </div>
+        <img class="linetest" src="line.png">
+        <div id="captureScreen">
+            <video id="video" autoplay></video>
+            <p>Camera</p>
+            <p>Capture a photo of something</p>
+            <img id="captureBtn" onclick="capturePhoto()" src="bluecircle.png" alt="" srcset="" />
+        </div>
+        <button id="backBtn">back</button>
+        <div id="infoScreen">
+            <img id="image" src="" alt="">
+            <p>Object: <span id="object">Pikachu</span></p>
+            <p>Description: <span id="description">Pikachu, the iconic Electric-type Pokémon.</span></p>
+            <div class="flex">
+                <div>
+                    <p>Species: <span id="species">Pokémon</span></p>
+                    <p>Type: <span id="type">Electric</span></p>
+                    <p>Weight: <span id="approximateWeight">6 kg</span></p>
+                    <p>Height: <span id="approximateHeight">40 cm</span></p>
+                </div>
+                <div>
+                    <p>HP: <span id="hp">35</span></p>
+                    <p>Attack: <span id="attack">55</span></p>
+                    <p>Defense: <span id="defense">40</span></p>
+                    <p>Speed: <span id="speed">90</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p id="response"></p>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,138 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #252525;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#container {
+    background-color: #ff0000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    min-height: 100dvh;
+    overflow: hidden;
+}
+
+.circle-container {
+    display: flex;
+    margin: 1rem .5rem;
+}
+
+.circle {
+    border-radius: 50%;
+}
+
+.small-circles {
+    display: flex;
+}
+
+.small-circles>div {
+    width: 15px;
+    height: 15px;
+    border: 2px solid white;
+    margin: 5px;
+}
+
+.red {
+    background-color: red;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.green {
+    background-color: green;
+}
+
+.linetest {
+    transform: translateY(-4rem);
+}
+
+#video {
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: #000;
+    margin: 0 auto;
+    border: 4px solid white;
+}
+
+p {
+    color: white;
+}
+
+#captureScreen {
+    text-align: center;
+
+}
+
+#infoScreen {
+    display: none;
+    text-align: left;
+    padding: 1rem;
+    background-color: #FF5722;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    animation: fadeup 1s ease-out;
+}
+
+#infoScreen>div>p {
+    font-size: 1rem;
+}
+
+#infoScreen>img {
+    width: 100%;
+    border-radius: 1rem;
+    border: 4px solid white;
+}
+
+.flex {
+    display: flex;
+    gap: 4rem;
+}
+
+#captureBtn {
+    cursor: pointer;
+}
+
+#backBtn {
+    display: none;
+    padding: 0.5rem 1rem;
+    background-color: #000;
+    color: white;
+    cursor: pointer;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: .4rem;
+    margin: 0 1rem;
+    translate: 0 -2.5rem;
+}
+
+.blink {
+    animation: blinkani 2 ease-in-out alternate infinite;
+}
+
+@keyframes fadeup {
+    0% {
+        transform: translateY(1000px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes blinkani {
+    0% {
+        opacity: 70%;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}
