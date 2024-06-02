@@ -17,18 +17,30 @@ app.post('/pokedexit', async (req, res) => {
         Given an image you should output the follwoing text:
         {"description","object", "species", "approximateWeight", "approximateHeight", "hp", "attack", "defense", "speed", "type"}. 
           
-        For example, if the object is a Golden Retriever, you should output the following text:
-        {"description":"Golden Retriever, a loyal and friendly canine species, known for its intelligence and adaptability. Weighing between 10-20 kg and standing 50-60 cm tall, this dog is a perfect companion for families. With a balanced attack and defense, and a moderate speed, Golden Retrievers excel in tasks that require endurance and strength. Their golden coat and gentle demeanor make them easily recognizable and beloved by many.","object": "Golden Retriever", "species": "Dog", "approximateWeight": "10-20 kg", "approximateHeight": "50-60 cm", "hp": 50, "attack": 40, "defense": 40, "speed": 19, "type": "normal"}.
+        For example, if the object is a Cat, you should output the following text:
+        {"description":"The domestic cat, a beloved feline companion known for its independent nature and playful antics. Weighing between 4-5 kg and standing approximately 23-25 cm tall, this furry friend brings joy to households worldwide. With sharp claws for attack and agility for defense, cats are predators by nature. Their speed and agility make them excellent hunters, while their purrs and cuddles provide comfort and companionship.","object": "Cat", "species": "Cat", "approximateWeight": "4-5 kg", "approximateHeight": "23-25 cm", "hp": 30, "attack": 35, "defense": 20, "speed": 40, "type": "normal"}.
 
-        Another example for a  {"description":"The Magpie, a sleek and intelligent avian species, renowned for its striking black and white plumage and its melodious calls. Weighing between 130 - 270 grams and standing 37-43 cm tall, this bird possesses remarkable agility and speed, making it a master of the skies. With moderate HP and attack stats, coupled with a slightly lower defense, Magpies rely on their swift movements and sharp beaks to outmaneuver and peck at their prey. Often found in urban and rural environments alike, these birds are both admired for their beauty and feared for their mischievous behavior","object": "Magpie", "species": "Bird", "approximateWeight": "130 - 270 g", "approximateHeight": "37-43 cm", "hp": 25, "attack": 20, "defense": 10, "speed": 32, "type": "Flying"}
+        Another example for a  {
+            "description": "The rose plant, a symbol of beauty and love, known for its fragrant blooms and thorny stems. Typically reaching a height of 1-2 meters, this elegant plant adds charm to gardens worldwide. With sharp thorns for protection and vibrant petals to attract pollinators, roses are both resilient and enchanting. Their robust structure and stunning appearance make them a favorite among gardeners, while their fragrance and color provide aesthetic and sensory pleasure.",
+            "object": "Rose Plant",
+            "species": "Rosa",
+            "approximateWeight": "2-3 kg",
+            "approximateHeight": "1-2 meters",
+            "hp": 25,
+            "attack": 15,
+            "defense": 30,
+            "speed": 0,
+            "type": "plant"
+          }
+          
          
-        If you are given an object that is not a living creature, plant or lifeform, such as a coffee cup, output the same fields but with type: "Inanimate". 
+        If you are given an object that is not a living creature, plant or lifeform, such as a rock, output the same fields but with type: "Inanimate". 
 
         If you are given a description of a person or human, output "species": "Human" and "name": "Person' and "type": "Normal". 
         
         If you are not sure what the attributes are for things like height or speed, it is okay to guess.
        
-        `, {"inlineData":{"data":imageData, "mimeType":"image/*"}}];
+        `, { "inlineData": { "data": imageData, "mimeType": "image/*" } }];
 
         const result = await model.generateContent(prompt);
         const text = result.response.text();
