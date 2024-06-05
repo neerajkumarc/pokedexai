@@ -1,6 +1,7 @@
 const video = document.getElementById('video');
 const canvas = document.createElement('canvas');
 const context = canvas.getContext('2d');
+const msgText = document.getElementById("msgText")
 const captureBtn = document.getElementById("captureBtn")
 const backBtn = document.getElementById("backBtn")
 const captureScreen = document.getElementById("captureScreen")
@@ -21,6 +22,7 @@ getUserMedia()
         video.srcObject = stream;
     })
     .catch(error => {
+        msgText.textContent = 'Error accessing the camera'
         console.error('Error accessing the camera:', error);
     });
 
@@ -31,6 +33,7 @@ function capturePhoto() {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     document.getElementById("image").setAttribute("src", canvas.toDataURL('image/png'))
     const base64String = canvas.toDataURL('image/png').split(',')[1];
+    msgText.textContent = "Processing please wait..."
     video.pause()
     video.style.animation = "blinkani 1s ease-in-out infinite alternate"
     captureBtn.setAttribute("disabled", "true")
@@ -77,6 +80,7 @@ backBtn.addEventListener("click", () => {
     infoScreen.style.display = "none"
     captureScreen.style.display = "block"
     backBtn.style.display = "none"
+    msgText.textContent = "Capture a photo of something"
     video.play()
     video.style.animation = ""
     captureBtn.removeAttribute("disabled")
