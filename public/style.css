@@ -20,7 +20,7 @@ body {
 
 .circle-container {
     display: flex;
-    margin: 1rem .5rem;
+    margin: .5rem;
 }
 
 .circle {
@@ -55,8 +55,8 @@ body {
 }
 
 #video {
-    width: 350px;
-    height: 350px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
     background: #000;
     margin: 0 auto;
@@ -99,6 +99,8 @@ p {
 
 #captureBtn {
     cursor: pointer;
+    background: none;
+    border: none;
 }
 
 #backBtn {

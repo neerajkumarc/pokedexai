@@ -1,87 +1,129 @@
-const video = document.getElementById('video');
-const canvas = document.createElement('canvas');
-const context = canvas.getContext('2d');
-const msgText = document.getElementById("msgText")
-const captureBtn = document.getElementById("captureBtn")
-const backBtn = document.getElementById("backBtn")
-const captureScreen = document.getElementById("captureScreen")
-const infoScreen = document.getElementById("infoScreen")
+const video = document.getElementById("video");
+const canvas = document.createElement("canvas");
+const context = canvas.getContext("2d");
+const msgText = document.getElementById("msgText");
+const captureBtn = document.getElementById("captureBtn");
+const backBtn = document.getElementById("backBtn");
+const captureScreen = document.getElementById("captureScreen");
+const infoScreen = document.getElementById("infoScreen");
+
+let hasCameraPermission = false;
+let currentStream = null;
 
 function getUserMedia() {
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        // Mobile device
-        return navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: "environment" } } });
-    } else {
-        // Laptop or desktop
-        return navigator.mediaDevices.getUserMedia({ video: true });
-    }
+  if (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    )
+  ) {
+    // Mobile device
+    return navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { exact: "environment" } },
+    });
+  } else {
+    // Laptop or desktop
+    return navigator.mediaDevices.getUserMedia({ video: true });
+  }
 }
 
-getUserMedia()
-    .then(stream => {
-        video.srcObject = stream;
+function requestCameraAccess() {
+  msgText.textContent = "Requesting camera permission...";
+
+  getUserMedia()
+    .then((stream) => {
+      hasCameraPermission = true;
+      currentStream = stream;
+      video.srcObject = stream;
+      video.play();
+      msgText.textContent = "Capture a photo of something";
     })
-    .catch(error => {
-        msgText.textContent = 'Error accessing the camera'
-        console.error('Error accessing the camera:', error);
+    .catch((error) => {
+      hasCameraPermission = false;
+      currentStream = null;
+      video.srcObject = null;
+      msgText.textContent = "Camera access denied. Tap Capture to try again.";
+      console.error("Error accessing the camera:", error);
     });
+}
+
+// Try once on load
+requestCameraAccess();
+
+// Handle capture button clicks: if permission not granted, prompt again; otherwise capture.
+captureBtn.addEventListener("click", () => {
+  if (!hasCameraPermission) {
+    requestCameraAccess();
+  } else {
+    capturePhoto();
+  }
+});
 
 function capturePhoto() {
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+  if (!hasCameraPermission || !video.srcObject) {
+    msgText.textContent =
+      "Camera not available. Tap Capture to allow camera access.";
+    requestCameraAccess();
+    return;
+  }
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
 
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    document.getElementById("image").setAttribute("src", canvas.toDataURL('image/png'))
-    const base64String = canvas.toDataURL('image/png').split(',')[1];
-    msgText.textContent = "Processing please wait..."
-    video.pause()
-    video.style.animation = "blinkani 1s ease-in-out infinite alternate"
-    captureBtn.setAttribute("disabled", "true")
-    sendToEndpoint(base64String);
+  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  document
+    .getElementById("image")
+    .setAttribute("src", canvas.toDataURL("image/png"));
+  const base64String = canvas.toDataURL("image/png").split(",")[1];
+  msgText.textContent = "Processing please wait...";
+  video.pause();
+  video.style.animation = "blinkani 1s ease-in-out infinite alternate";
+  captureBtn.setAttribute("disabled", "true");
+  sendToEndpoint(base64String);
 }
 
 function sendToEndpoint(base64String) {
-    const endpointUrl = '/pokedexit';
-    const requestData = { imageData: base64String };
+  const endpointUrl = "/pokedexit";
+  const requestData = { imageData: base64String };
 
-    fetch(endpointUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData)
+  fetch(endpointUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      renderInfo(data);
     })
-        .then(response => response.json())
-        .then(data => {
-            renderInfo(data)
-        })
-        .catch(error => {
-            console.error('Error sending data to endpoint:', error);
-        });
+    .catch((error) => {
+      console.error("Error sending data to endpoint:", error);
+    });
 }
 
 function renderInfo(data, base64String) {
-    captureScreen.style.display = "none"
-    infoScreen.style.display = "block"
-    backBtn.style.display = "block"
-    document.getElementById("description").textContent = data.description;
-    document.getElementById("object").textContent = data.object;
-    document.getElementById("species").textContent = data.species;
-    document.getElementById("approximateWeight").textContent = data.approximateWeight;
-    document.getElementById("approximateHeight").textContent = data.approximateHeight;
-    document.getElementById("hp").textContent = data.hp;
-    document.getElementById("attack").textContent = data.attack;
-    document.getElementById("defense").textContent = data.defense;
-    document.getElementById("speed").textContent = data.speed;
-    document.getElementById("type").textContent = data.type;
+  captureScreen.style.display = "none";
+  infoScreen.style.display = "block";
+  backBtn.style.display = "block";
+  document.getElementById("description").textContent = data.description;
+  document.getElementById("object").textContent = data.object;
+  document.getElementById("species").textContent = data.species;
+  document.getElementById("approximateWeight").textContent =
+    data.approximateWeight;
+  document.getElementById("approximateHeight").textContent =
+    data.approximateHeight;
+  document.getElementById("hp").textContent = data.hp;
+  document.getElementById("attack").textContent = data.attack;
+  document.getElementById("defense").textContent = data.defense;
+  document.getElementById("speed").textContent = data.speed;
+  document.getElementById("type").textContent = data.type;
 }
 
 backBtn.addEventListener("click", () => {
-    infoScreen.style.display = "none"
-    captureScreen.style.display = "block"
-    backBtn.style.display = "none"
-    msgText.textContent = "Capture a photo of something"
-    video.play()
-    video.style.animation = ""
-    captureBtn.removeAttribute("disabled")
-})
+  infoScreen.style.display = "none";
+  captureScreen.style.display = "block";
+  backBtn.style.display = "none";
+  msgText.textContent = "Capture a photo of something";
+  video.play();
+  video.style.animation = "";
+  captureBtn.removeAttribute("disabled");
+});
